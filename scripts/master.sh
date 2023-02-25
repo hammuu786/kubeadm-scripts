@@ -4,7 +4,7 @@
 
 set -euxo pipefail
 
-MASTER_IP="10.0.0.10"
+MASTER_IP=$(nslookup $(hostname -f) | awk '/^Address: / { print $2 }')
 NODENAME=$(hostname -s)
 POD_CIDR="192.168.0.0/16"
 
@@ -20,6 +20,22 @@ sudo chown "$(id -u)":"$(id -g)" "$HOME"/.kube/config
 
 # Install Claico Network Plugin Network 
 
-curl https://docs.projectcalico.org/manifests/calico.yaml -O
+kubectl apply -f kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml
 
-kubectl apply -f calico.yaml
+
+##on Executed server i mean opertaionl server you need to perform these commands
+## copy the .kube folder in opertaionl file
+#  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+#  sudo chmod +x kubectl
+#  sudo mv kubectl /usr/local/bin
+# Add kubectl aliases to .bashrc
+#echo "alias ku='kubectl'" >> ~/.bashrc
+#echo "alias kd='kubectl get deploy'" >> ~/.bashrc
+#echo "alias kn='kubectl get nodes'" >> ~/.bashrc
+#echo "alias kdp='kubectl describe pod'" >> ~/.bashrc
+#echo "alias kdn='kubectl describe no'" >> ~/.bashrc
+#echo "alias ks='kubectl get svc'" >> ~/.bashrc
+
+# Reload .bashrc to activate aliases
+# source ~/.bashrc
+#
